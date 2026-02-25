@@ -501,5 +501,19 @@
     // init
     setMode("image");
   </script>
+  <script>
+document.getElementById("genBtn").addEventListener("click", function() {
+    const promptText = document.querySelector("textarea")?.value || "Prompt kosong";
+    
+    const resultBox = document.querySelector(".result");
+    
+    resultBox.innerHTML += `
+        <div style="margin-top:10px;padding:10px;background:#1f2a40;border-radius:8px;">
+            <strong>Hasil Generate:</strong><br>
+            ${promptText}
+        </div>
+    `;
+});
+</script>
 </body>
 </html>
