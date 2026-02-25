@@ -1,519 +1,90 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Studio Pro — Generate Foto & Video</title>
-  <style>
-    :root{
-      --bg:#0b1020;
-      --panel:#121a33;
-      --panel2:#0f1630;
-      --text:#eaf0ff;
-      --muted:#a9b4d0;
-      --brand:#4f7cff;
-      --brand2:#22c55e;
-      --danger:#ef4444;
-      --stroke:rgba(255,255,255,.10);
-      --shadow: 0 12px 36px rgba(0,0,0,.35);
-      --r:16px;
-      --r2:22px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 700px at 20% -10%, rgba(79,124,255,.35), transparent 60%),
-                  radial-gradient(900px 600px at 90% 0%, rgba(34,197,94,.18), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-    }
-    a{color:inherit; text-decoration:none}
-    .container{max-width:1100px; margin:0 auto; padding:24px}
-    .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 16px; border:1px solid var(--stroke); border-radius:999px;
-      background:rgba(18,26,51,.65); backdrop-filter: blur(8px);
-    }
-    .logo{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
-    .dot{width:10px; height:10px; border-radius:999px; background:var(--brand); box-shadow:0 0 0 6px rgba(79,124,255,.18)}
-    .navlinks{display:flex; gap:18px; color:var(--muted); font-weight:600; font-size:14px}
-    .navlinks a:hover{color:var(--text)}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      gap:10px; padding:12px 14px; border-radius:12px;
-      border:1px solid var(--stroke); background:rgba(255,255,255,.06);
-      color:var(--text); font-weight:800; cursor:pointer;
-      transition:.2s transform, .2s opacity, .2s background;
-    }
-    .btn:hover{transform: translateY(-1px); background:rgba(255,255,255,.09)}
-    .btn.primary{background:linear-gradient(135deg, rgba(79,124,255,.95), rgba(79,124,255,.6)); border-color:rgba(79,124,255,.35)}
-    .btn.success{background:linear-gradient(135deg, rgba(34,197,94,.95), rgba(34,197,94,.55)); border-color:rgba(34,197,94,.35)}
-    .btn.danger{background:rgba(239,68,68,.18); border-color:rgba(239,68,68,.35)}
-    .hero{
-      display:grid; grid-template-columns: 1.2fr .8fr; gap:18px;
-      margin-top:18px;
-    }
-    @media (max-width: 900px){
-      .hero{grid-template-columns:1fr}
-      .navlinks{display:none}
-    }
-    .card{
-      background:rgba(18,26,51,.72);
-      border:1px solid var(--stroke);
-      border-radius:var(--r2);
-      box-shadow: var(--shadow);
-    }
-    .heroLeft{padding:26px}
-    .badge{
-      display:inline-flex; gap:10px; align-items:center;
-      padding:8px 12px; border-radius:999px;
-      background:rgba(79,124,255,.15);
-      border:1px solid rgba(79,124,255,.25);
-      color:var(--text); font-weight:800; font-size:13px;
-    }
-    h1{margin:14px 0 10px; font-size:42px; line-height:1.05}
-    .sub{color:var(--muted); font-size:16px; line-height:1.55; max-width:58ch}
-    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
-    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px}
-    @media (max-width: 600px){ .grid2{grid-template-columns:1fr} h1{font-size:34px}}
-    .mini{
-      padding:14px; border-radius:16px;
-      background:rgba(255,255,255,.05); border:1px solid var(--stroke);
-    }
-    .mini .t{font-weight:900}
-    .mini .d{color:var(--muted); margin-top:6px; font-size:13px; line-height:1.4}
-    .heroRight{padding:18px}
-    .tabs{display:flex; gap:10px; flex-wrap:wrap; padding:8px; border-radius:16px; background:rgba(255,255,255,.05); border:1px solid var(--stroke)}
-    .tab{
-      padding:10px 12px; border-radius:12px; border:1px solid transparent;
-      background:transparent; color:var(--muted); font-weight:900; cursor:pointer;
-    }
-    .tab.active{background:rgba(79,124,255,.18); color:var(--text); border-color:rgba(79,124,255,.25)}
-    .form{margin-top:12px; display:grid; gap:10px}
-    label{font-size:13px; color:var(--muted); font-weight:800}
-    textarea, select, input{
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--stroke);
-      background:rgba(15,22,48,.9);
-      color:var(--text);
-      outline:none;
-    }
-    textarea{min-height:110px; resize:vertical}
-    .row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    @media (max-width: 600px){ .row{grid-template-columns:1fr} }
-    .result{
-      margin-top:12px;
-      padding:14px;
-      border-radius:18px;
-      border:1px solid var(--stroke);
-      background:rgba(15,22,48,.65);
-    }
-    .resultTop{display:flex; align-items:center; justify-content:space-between; gap:10px}
-    .pill{
-      font-size:12px; padding:7px 10px; border-radius:999px;
-      border:1px solid var(--stroke); color:var(--muted); font-weight:900;
-      background:rgba(255,255,255,.04);
-    }
-    .mediaBox{
-      margin-top:12px;
-      border-radius:16px;
-      border:1px dashed rgba(255,255,255,.20);
-      background:rgba(255,255,255,.03);
-      padding:14px;
-      display:grid; place-items:center;
-      min-height:220px;
-      text-align:center;
-      color:var(--muted);
-    }
-    .imgMock{
-      width:100%; max-width:420px; border-radius:14px; border:1px solid var(--stroke);
-      background: linear-gradient(135deg, rgba(79,124,255,.25), rgba(34,197,94,.15));
-      aspect-ratio: 16/10;
-      display:grid; place-items:center;
-      color:rgba(234,240,255,.9);
-      font-weight:900;
-    }
-    .vidMock{
-      width:100%; max-width:420px; border-radius:14px; border:1px solid var(--stroke);
-      background: linear-gradient(135deg, rgba(34,197,94,.22), rgba(79,124,255,.15));
-      aspect-ratio: 16/9;
-      display:grid; place-items:center;
-      color:rgba(234,240,255,.9);
-      font-weight:900;
-      position:relative;
-    }
-    .play{
-      width:68px; height:68px; border-radius:999px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.22);
-      display:grid; place-items:center;
-      backdrop-filter: blur(6px);
-      box-shadow:0 10px 26px rgba(0,0,0,.25);
-    }
-    .triangle{
-      width:0; height:0;
-      border-left:18px solid rgba(255,255,255,.88);
-      border-top:12px solid transparent;
-      border-bottom:12px solid transparent;
-      margin-left:4px;
-    }
-    .section{margin-top:18px; padding:18px}
-    .section h2{margin:0 0 12px; font-size:22px}
-    .features{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
-    @media (max-width: 900px){ .features{grid-template-columns:1fr} }
-    .feat{padding:14px; border-radius:18px; border:1px solid var(--stroke); background:rgba(255,255,255,.04)}
-    .feat .h{font-weight:900}
-    .feat .p{color:var(--muted); font-size:13px; margin-top:6px; line-height:1.5}
-    .pricing{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    @media (max-width: 900px){ .pricing{grid-template-columns:1fr} }
-    .priceCard{padding:18px}
-    .price{font-size:34px; font-weight:1000; margin:10px 0}
-    ul{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.7}
-    .foot{margin-top:18px; padding:16px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted)}
-    .hint{font-size:12px; color:var(--muted); margin-top:6px}
-    .warn{font-size:12px; color:rgba(234,240,255,.85); background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.22); padding:10px 12px; border-radius:14px}
-    .ok{font-size:12px; color:rgba(234,240,255,.85); background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.22); padding:10px 12px; border-radius:14px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Studio Pro</title>
+
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#0b1020;
+  color:white;
+  padding:40px;
+}
+.container{
+  max-width:600px;
+  margin:auto;
+}
+textarea{
+  width:100%;
+  height:120px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+}
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:8px;
+  margin-top:10px;
+  cursor:pointer;
+}
+.generate{
+  background:#4f7cff;
+  color:white;
+}
+.whatsapp{
+  background:#25D366;
+  color:white;
+  margin-left:10px;
+}
+.result{
+  margin-top:20px;
+  padding:15px;
+  background:#1f2a40;
+  border-radius:10px;
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="nav">
-      <div class="logo"><span class="dot"></span> AI Studio Pro</div>
-      <div class="navlinks">
-        <a href="#tools">Tools</a>
-        <a href="#fitur">Fitur</a>
-        <a href="#harga">Harga</a>
-        <a href="#faq">FAQ</a>
-      </div>
-      <a class="btn success" id="waTop" href="#" target="_blank" rel="noopener">Chat WhatsApp</a>
-    </div>
 
-    <div class="hero">
-      <div class="card heroLeft">
-        <div class="badge">⚡ Generate Foto & Video AI • Cepat • Profesional</div>
-        <h1>Buat Konten AI untuk Bisnis, Kuliah, dan Affiliate — dalam hitungan detik.</h1>
-        <p class="sub">
-          AI Studio Pro adalah website “editor AI” sederhana untuk menghasilkan <b>gambar</b> dan <b>video pendek</b> dari prompt.
-          Cocok untuk konten TikTok/IG, promosi produk, thumbnail, dan presentasi.
-        </p>
+<div class="container">
+  <h2>AI Studio Pro</h2>
 
-        <div class="ctaRow">
-          <a class="btn primary" href="#tools">Coba Demo Tools</a>
-          <a class="btn" href="#harga">Lihat Paket</a>
-          <button class="btn danger" id="resetBtn" type="button">Reset</button>
-        </div>
+  <textarea id="prompt" placeholder="Tulis prompt disini..."></textarea><br>
 
-        <div class="grid2">
-          <div class="mini">
-            <div class="t">🎯 Untuk Affiliate</div>
-            <div class="d">Buat konten promosi produk lebih cepat: poster, thumbnail, short video script.</div>
-          </div>
-          <div class="mini">
-            <div class="t">🧠 Untuk Kreator</div>
-            <div class="d">Prompt → hasil. Copy text, simpan ide, dan pakai template gaya profesional.</div>
-          </div>
-        </div>
+  <button class="generate" onclick="generateAI()">Generate</button>
+  <button class="whatsapp" onclick="openWA()">Chat WhatsApp</button>
 
-        <div class="hint">
-          *Versi ini demo UI. Untuk generate AI asli perlu API (nanti kita upgrade).
-        </div>
-      </div>
-
-      <div class="card heroRight" id="tools">
-        <div class="tabs">
-          <button class="tab active" data-tab="image" type="button">🖼️ Generate Gambar</button>
-          <button class="tab" data-tab="video" type="button">🎬 Generate Video</button>
-          <button class="tab" data-tab="affiliate" type="button">🔗 Affiliate Caption</button>
-        </div>
-
-        <div class="form">
-          <div>
-            <label>Prompt</label>
-            <textarea id="prompt" placeholder="Contoh: Poster promo kopi latte, gaya minimalis, lighting hangat, text 'Diskon 30%'..."></textarea>
-            <div class="hint">Tips: tulis style + objek + warna + tujuan (poster/thumbnail/scene).</div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label>Gaya</label>
-              <select id="style">
-                <option value="minimalis">Minimalis</option>
-                <option value="cinematic">Cinematic</option>
-                <option value="cartoon">Cartoon</option>
-                <option value="product">Product Ads</option>
-              </select>
-            </div>
-            <div>
-              <label>Rasio</label>
-              <select id="ratio">
-                <option value="1:1">1:1 (Instagram)</option>
-                <option value="9:16">9:16 (TikTok/Reels)</option>
-                <option value="16:9">16:9 (YouTube)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <button class="btn primary" id="genBtn" type="button">Generate</button>
-            <button class="btn" id="copyBtn" type="button">Copy Output</button>
-          </div>
-
-          <div class="result">
-            <div class="resultTop">
-              <div style="font-weight:1000">Hasil</div>
-              <div class="pill" id="modePill">Mode: Gambar</div>
-            </div>
-            <div id="notice" class="warn" style="margin-top:10px;">
-              Demo mode aktif. Klik Generate untuk melihat contoh hasil.
-            </div>
-
-            <div class="mediaBox" id="mediaBox">
-              <div class="imgMock" id="imgMock">Preview Gambar (Demo)</div>
-            </div>
-
-            <div class="hint" id="textOut" style="margin-top:10px;">
-              Output text akan tampil di sini…
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card section" id="fitur">
-      <h2>Fitur Utama</h2>
-      <div class="features">
-        <div class="feat">
-          <div class="h">⚡ Prompt-to-Result</div>
-          <div class="p">Masukkan prompt, pilih gaya & rasio, lalu dapat hasil cepat. Cocok untuk konten harian.</div>
-        </div>
-        <div class="feat">
-          <div class="h">🧩 Template Prompt</div>
-          <div class="p">Punya template prompt “Poster”, “Thumbnail”, “Product Ads”, dan “Cinematic Scene”.</div>
-        </div>
-        <div class="feat">
-          <div class="h">🔗 Mode Affiliate</div>
-          <div class="p">Auto buat caption promosi + CTA + hashtag. Tinggal tempel link affiliate.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card section" id="harga">
-      <h2>Paket Harga</h2>
-      <div class="pricing">
-        <div class="card priceCard" style="background:rgba(255,255,255,.04); border:1px solid var(--stroke);">
-          <div style="font-weight:1000">Free</div>
-          <div class="price">Rp0</div>
-          <div class="pill">Cocok untuk coba</div>
-          <ul>
-            <li>Generate demo (UI)</li>
-            <li>Template prompt dasar</li>
-            <li>Copy output text</li>
-          </ul>
-          <div style="margin-top:12px" class="ok">Mulai dari demo dulu, lalu upgrade ke versi API.</div>
-        </div>
-
-        <div class="card priceCard" style="border:1px solid rgba(79,124,255,.35); background:rgba(79,124,255,.08);">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-            <div style="font-weight:1000">Premium</div>
-            <div class="pill">Paling Laris</div>
-          </div>
-          <div class="price">Rp79.000<span style="font-size:14px; color:var(--muted); font-weight:800">/bulan</span></div>
-          <ul>
-            <li>Generate AI asli (via API)</li>
-            <li>History hasil</li>
-            <li>Mode Affiliate lengkap</li>
-            <li>Download hasil (png/mp4)</li>
-            <li>Priority support WhatsApp</li>
-          </ul>
-          <div class="ctaRow" style="margin-top:12px">
-            <a class="btn success" id="waPremium" href="#" target="_blank" rel="noopener">Upgrade via WhatsApp</a>
-          </div>
-          <div class="hint">*Link pembayaran & aktivasi premium via admin.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card section" id="faq">
-      <h2>FAQ</h2>
-      <div class="features">
-        <div class="feat">
-          <div class="h">Apakah ini sudah benar-benar generate AI?</div>
-          <div class="p">Versi HTML ini demo UI. Nanti kita sambungkan ke API Image/Video AI untuk hasil asli.</div>
-        </div>
-        <div class="feat">
-          <div class="h">Apa saya bisa jual sebagai jasa?</div>
-          <div class="p">Bisa. Kamu bisa pakai untuk jasa desain konten, poster promosi, thumbnail, dan ide konten.</div>
-        </div>
-        <div class="feat">
-          <div class="h">Cara upgrade?</div>
-          <div class="p">Klik tombol WhatsApp, nanti admin kirim link pembayaran & aktivasi premium.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="foot">
-      <div>© 2026 AI Studio Pro • Dibuat untuk belajar & demo</div>
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <a class="btn" href="#tools">Kembali ke Tools</a>
-        <a class="btn success" id="waBottom" href="#" target="_blank" rel="noopener">Chat WhatsApp</a>
-      </div>
-    </div>
+  <div class="result" id="resultBox">
+    Hasil akan muncul disini...
   </div>
+</div>
 
-  <script>
-    // ====== Config ======
-    const WA_NUMBER = "6285353511419";
-    const WA_TEXT = encodeURIComponent("Halo Admin, saya mau tanya tentang AI Studio Pro (generate gambar & video). Bisa dibantu?");
-    const WA_LINK = https://wa.me/${WA_NUMBER}?text=${WA_TEXT};
+<script>
+function generateAI(){
+  const text = document.getElementById("prompt").value;
+  
+  if(text.trim() === ""){
+    alert("Isi prompt dulu!");
+    return;
+  }
 
-    document.getElementById("waTop").href = WA_LINK;
-    document.getElementById("waBottom").href = WA_LINK;
+  document.getElementById("resultBox").innerHTML =
+    "<strong>Hasil Generate:</strong><br>" + text;
 
-    const WA_PREMIUM_TEXT = encodeURIComponent(
-      "Halo Admin AI Studio Pro, saya mau upgrade Premium (Rp79.000/bulan).\n\nNama:\nEmail:\nNo WhatsApp:\n\nMohon kirim link pembayaran resmi. Terima kasih."
-    );
-    document.getElementById("waPremium").href = https://wa.me/${WA_NUMBER}?text=${WA_PREMIUM_TEXT};
+  alert("Generate berhasil ✅");
+}
 
-    // ====== Tabs + Demo Generator ======
-    let mode = "image"; // image | video | affiliate
-
-    const tabs = document.querySelectorAll(".tab");
-    const modePill = document.getElementById("modePill");
-    const promptEl = document.getElementById("prompt");
-    const styleEl = document.getElementById("style");
-    const ratioEl = document.getElementById("ratio");
-    const notice = document.getElementById("notice");
-    const mediaBox = document.getElementById("mediaBox");
-    const textOut = document.getElementById("textOut");
-    const genBtn = document.getElementById("genBtn");
-    const copyBtn = document.getElementById("copyBtn");
-
-    function setMode(newMode){
-      mode = newMode;
-      tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === newMode));
-      if(mode === "image"){
-        modePill.textContent = "Mode: Gambar";
-        mediaBox.innerHTML = <div class="imgMock">Preview Gambar (Demo)</div>;
-        notice.className = "warn";
-        notice.textContent = "Mode Gambar aktif. Klik Generate untuk contoh output poster/thumbnail.";
-        promptEl.placeholder = "Contoh: Poster promo kopi latte, gaya minimalis, lighting hangat, text 'Diskon 30%'...";
-      } else if(mode === "video"){
-        modePill.textContent = "Mode: Video";
-        mediaBox.innerHTML =
-          `<div class="vidMock">
-            <div class="play"><div class="triangle"></div></div>
-            <div style="position:absolute; bottom:10px; left:10px; font-size:12px; color:rgba(234,240,255,.85);">
-              Preview Video (Demo)
-            </div>
-          </div>`;
-        notice.className = "warn";
-        notice.textContent = "Mode Video aktif. Versi demo menampilkan konsep scene + script singkat.";
-        promptEl.placeholder = "Contoh: Video 10 detik promosi parfum, vibe cinematic, slow motion, teks 'Wangi Tahan Lama'...";
-      } else {
-        modePill.textContent = "Mode: Affiliate Caption";
-        mediaBox.innerHTML = <div class="imgMock" style="aspect-ratio:16/9">Output Caption (Demo)</div>;
-        notice.className = "ok";
-        notice.textContent = "Mode Affiliate aktif. Klik Generate untuk caption + CTA + hashtag.";
-        promptEl.placeholder = "Contoh: Produk: serum niacinamide, target: wanita 18-30, benefit: glowing, link affiliate: ...";
-      }
-      textOut.textContent = "Output text akan tampil di sini…";
-    }
-
-    tabs.forEach(t => t.addEventListener("click", () => setMode(t.dataset.tab)));
-
-    function demoGenerate(){
-      const p = (promptEl.value || "").trim();
-      const style = styleEl.value;
-      const ratio = ratioEl.value;
-
-      if(!p){
-        notice.className = "warn";
-        notice.textContent = "Isi prompt dulu ya 🙂";
-        return;
-      }
-
-      const base = Prompt: ${p}\nGaya: ${style}\nRasio: ${ratio}\n\n;
-
-      if(mode === "image"){
-        notice.className = "ok";
-        notice.textContent = "Sukses! (Demo) Poster/thumbnail konsep sudah dibuat.";
-        textOut.textContent =
-          base +
-          "Output (Demo):\n" +
-          "- Komposisi: produk di tengah + label diskon\n" +
-          "- Warna: kontras, clean\n" +
-          "- Copywriting: 1 kalimat benefit + CTA\n\n" +
-          "Next step: sambungkan ke API Image AI untuk menghasilkan PNG asli.";
-      } else if(mode === "video"){
-        notice.className = "ok";
-        notice.textContent = "Sukses! (Demo) Konsep video + script sudah dibuat.";
-        textOut.textContent =
-          base +
-          "Script 10 detik (Demo):\n" +
-          "0-2s (Hook): 'Stop! Ini bikin kamu kelihatan lebih percaya diri!'\n" +
-          "2-7s (Benefit): tampilkan produk + 2 manfaat utama + close-up\n" +
-          "7-10s (CTA): 'Klik link sekarang, stok terbatas!'\n\n" +
-          "Next step: sambungkan ke API Video AI untuk menghasilkan MP4 asli.";
-      } else {
-        notice.className = "ok";
-        notice.textContent = "Sukses! (Demo) Caption affiliate sudah dibuat.";
-        textOut.textContent =
-          base +
-          "Caption (Demo):\n" +
-          "✨ Lagi cari yang cepat & gampang dipakai? Ini jawabannya!\n" +
-          "✅ Benefit utama: tulis di sini\n" +
-          "🔥 Cocok untuk: target kamu\n" +
-          "👉 Link: tempel link affiliate kamu\n\n" +
-          "#promo #diskon #viral #fyp #rekomendasi #affiliate";
-      }
-    }
-
-    genBtn.addEventListener("click", demoGenerate);
-
-    copyBtn.addEventListener("click", async () => {
-      const text = textOut.textContent || "";
-      if(!text || text.includes("akan tampil di sini")){
-        notice.className = "warn";
-        notice.textContent = "Belum ada output untuk di-copy. Klik Generate dulu.";
-        return;
-      }
-      try{
-        await navigator.clipboard.writeText(text);
-        notice.className = "ok";
-        notice.textContent = "Berhasil di-copy ✅";
-      } catch(e){
-        notice.className = "warn";
-        notice.textContent = "Gagal copy. Coba manual (blok teks lalu Ctrl+C).";
-      }
-    });
-
-    document.getElementById("resetBtn").addEventListener("click", () => {
-      promptEl.value = "";
-      textOut.textContent = "Output text akan tampil di sini…";
-      notice.className = "warn";
-      notice.textContent = "Demo mode aktif. Klik Generate untuk melihat contoh hasil.";
-      setMode(mode);
-    });
-
-    // init
-    setMode("image");
-  </script>
-  <script>
-document.getElementById("genBtn").addEventListener("click", function() {
-    const promptText = document.querySelector("textarea")?.value || "Prompt kosong";
-    
-    const resultBox = document.querySelector(".result");
-    
-    resultBox.innerHTML += `
-        <div style="margin-top:10px;padding:10px;background:#1f2a40;border-radius:8px;">
-            <strong>Hasil Generate:</strong><br>
-            ${promptText}
-        </div>
-    `;
-});
+function openWA(){
+  const phone = "6285353511419";
+  const message = "Halo saya tertarik dengan AI Studio Pro";
+  const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+  window.open(url, "_blank");
+}
 </script>
+
 </body>
 </html>
