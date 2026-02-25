@@ -2,8 +2,12 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>AI Studio Pro - Generate Foto & Video</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Studio Pro - Generate Foto & Video (Demo)</title>
+
+  <!-- anti favicon 404 -->
+  <link rel="icon" href="data:," />
+
   <style>
     :root{
       --bg:#0b1020;
@@ -14,219 +18,194 @@
       --brand:#4f7cff;
       --brand2:#22c55e;
       --danger:#ef4444;
-      --stroke:rgba(255,255,255,.10);
+      --stroke:rgba(255,255,255,.12);
       --shadow: 0 12px 36px rgba(0,0,0,.35);
       --r:22px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(79,124,255,.35), transparent 60%),
-        radial-gradient(900px 600px at 90% 20%, rgba(34,197,94,.18), transparent 55%),
+        radial-gradient(1200px 700px at 20% 10%, rgba(79,124,255,.35), transparent 60%),
+        radial-gradient(900px 600px at 90% 0%, rgba(34,197,94,.18), transparent 55%),
         var(--bg);
       color:var(--text);
     }
     a{color:inherit; text-decoration:none}
-
-    .container{max-width:1100px;margin:0 auto;padding:24px}
+    .container{max-width:1100px; margin:0 auto; padding:24px}
     .nav{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 16px;border:1px solid var(--stroke);border-radius:999px;
-      background:rgba(18,26,51,.65);backdrop-filter: blur(8px);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 16px; border:1px solid var(--stroke);
+      border-radius:999px; background:rgba(18,26,51,.65);
+      backdrop-filter: blur(8px);
       box-shadow: var(--shadow);
     }
-    .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.3px}
-    .dot{width:10px;height:10px;border-radius:999px;background:var(--brand);box-shadow:0 0 0 6px rgba(79,124,255,.15)}
-    .menu{display:flex;gap:18px;color:var(--muted);font-weight:600}
-    .menu a{opacity:.9}
-    .menu a:hover{opacity:1;color:var(--text)}
-    .waTop{
-      background:linear-gradient(180deg, rgba(34,197,94,.95), rgba(34,197,94,.75));
-      border:1px solid rgba(255,255,255,.12);
-      color:#06210f;
-      padding:10px 14px;border-radius:12px;font-weight:900;
-      box-shadow: 0 10px 22px rgba(34,197,94,.20);
+    .logo{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .dot{width:10px; height:10px; border-radius:999px; background:var(--brand); box-shadow:0 0 0 4px rgba(79,124,255,.18)}
+    .navLinks{display:flex; gap:18px; color:var(--muted); font-weight:600; font-size:14px}
+    .navRight{display:flex; align-items:center; gap:10px}
+    .btn{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:12px;
       cursor:pointer;
+      font-weight:700;
+      transition:.15s;
+      user-select:none;
     }
-    .waTop:hover{filter:brightness(1.05)}
-
-    .hero{
-      display:grid;grid-template-columns: 1.1fr .9fr;gap:18px;
+    .btn:hover{transform: translateY(-1px)}
+    .btnPrimary{background: linear-gradient(135deg, rgba(79,124,255,.95), rgba(79,124,255,.55)); border-color: rgba(79,124,255,.35)}
+    .btnGreen{background: linear-gradient(135deg, rgba(34,197,94,.95), rgba(34,197,94,.55)); border-color: rgba(34,197,94,.35)}
+    .btnDanger{background: rgba(239,68,68,.14); border-color: rgba(239,68,68,.35); color:#ffd1d1}
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.05);
+      padding:6px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:700;
+      font-size:12px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap:18px;
       margin-top:18px;
     }
-    @media (max-width: 980px){
-      .hero{grid-template-columns:1fr; }
-      .menu{display:none}
-      .nav{border-radius:18px}
+    @media (max-width: 920px){
+      .grid{grid-template-columns: 1fr}
+      .navLinks{display:none}
     }
-
     .card{
       border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(17,26,51,.78), rgba(15,22,48,.78));
+      background:rgba(17,26,51,.7);
       border-radius: var(--r);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .left{padding:22px}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;
-      font-size:12px;font-weight:900;color:#cfe0ff;
-      padding:8px 12px;border-radius:999px;
+    .hero{padding:22px}
+    h1{margin:10px 0 10px; font-size:44px; line-height:1.05}
+    .sub{color:var(--muted); line-height:1.5; font-weight:600}
+    .heroBtns{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .miniCards{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px}
+    .mini{
       border:1px solid var(--stroke);
-      background: rgba(79,124,255,.10);
-      margin-bottom:12px;
+      background:rgba(15,22,48,.7);
+      border-radius:16px;
+      padding:14px;
+      color:var(--muted);
+      font-weight:650;
     }
-    h1{
-      margin:0 0 12px;
-      font-size:42px;line-height:1.08;
-      letter-spacing:-.8px;
-    }
-    .desc{color:var(--muted);font-size:14px;line-height:1.6;max-width:52ch}
-    .ctaRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-    .btn{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      padding:10px 14px;border-radius:12px;
-      font-weight:900;cursor:pointer;
-    }
-    .btn:hover{filter:brightness(1.05)}
-    .btn.primary{
-      background: linear-gradient(180deg, rgba(79,124,255,.95), rgba(79,124,255,.75));
-      border-color: rgba(255,255,255,.14);
-      color:#081227;
-    }
-    .btn.danger{
-      background: linear-gradient(180deg, rgba(239,68,68,.95), rgba(239,68,68,.72));
-      border-color: rgba(255,255,255,.14);
-      color:#2a0707;
-    }
-
-    .pillGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-    @media (max-width: 520px){ .pillGrid{grid-template-columns:1fr} }
-    .pill{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      border-radius:16px;padding:12px;
-    }
-    .pillTitle{font-weight:900;margin-bottom:6px}
-    .pillText{color:var(--muted);font-size:12px;line-height:1.45}
-
-    .right{padding:16px}
+    .mini b{color:var(--text)}
+    .tool{padding:18px}
     .tabs{
-      display:flex;gap:10px;align-items:center;
-      padding:10px;border-radius:16px;
+      display:flex; gap:10px; flex-wrap:wrap;
       border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      margin-bottom:12px;
+      background:rgba(15,22,48,.55);
+      padding:10px;
+      border-radius:16px;
     }
     .tab{
       flex:1;
-      display:flex;gap:8px;align-items:center;justify-content:center;
-      padding:10px 12px;border-radius:12px;
-      border:1px solid transparent;
-      color:var(--muted);font-weight:900;
+      min-width:120px;
+      padding:10px 12px;
+      border-radius:12px;
       cursor:pointer;
-      user-select:none;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      font-weight:800;
+      color:var(--muted);
+      display:flex; gap:8px; align-items:center; justify-content:center;
     }
     .tab.active{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
       border-color: rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
     }
-    .formLabel{font-size:12px;color:var(--muted);font-weight:900;margin:10px 0 6px}
+    .field{margin-top:12px}
+    label{display:block; margin:10px 0 8px; color:var(--muted); font-weight:800; font-size:13px}
     textarea{
-      width:100%;min-height:110px;resize:vertical;
-      border-radius:14px;border:1px solid var(--stroke);
-      background: rgba(11,16,32,.35);
+      width:100%;
+      min-height:110px;
+      resize:vertical;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
       color:var(--text);
-      padding:12px;font-size:13px;line-height:1.5;
+      padding:12px;
       outline:none;
+      font-weight:650;
     }
-    textarea:focus{border-color: rgba(79,124,255,.55)}
-    .hint{color:var(--muted);font-size:12px;margin-top:6px}
-    .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .row{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+      margin-top:10px;
+    }
     select{
       width:100%;
-      border-radius:14px;border:1px solid var(--stroke);
-      background: rgba(11,16,32,.35);
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
       color:var(--text);
       padding:10px 12px;
       outline:none;
-      font-weight:700;
+      font-weight:750;
     }
-    select:focus{border-color: rgba(79,124,255,.55)}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .btnBig{
-      padding:12px 14px;border-radius:14px;font-weight:1000;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      cursor:pointer;
-    }
-    .btnBig.primary{
-      background: linear-gradient(180deg, rgba(79,124,255,.95), rgba(79,124,255,.75));
-      border-color: rgba(255,255,255,.14);
-      color:#081227;
-    }
-    .btnBig.secondary{
-      background: rgba(255,255,255,.06);
-    }
-    .btnBig:hover{filter:brightness(1.05)}
+    .actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
     .result{
-      margin-top:12px;
+      margin-top:14px;
       border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
+      background:rgba(15,22,48,.6);
       border-radius:16px;
       overflow:hidden;
     }
     .resultTop{
-      display:flex;align-items:center;justify-content:space-between;
+      display:flex; align-items:center; justify-content:space-between;
       padding:10px 12px;
       border-bottom:1px solid var(--stroke);
-      color:var(--muted);font-weight:900;font-size:12px;
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
     }
-    .modePill{
-      font-size:11px;padding:6px 10px;border-radius:999px;
+    .badge{
+      padding:6px 10px;
       border:1px solid var(--stroke);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      color:var(--muted);
+      font-weight:900;
+      font-size:12px;
     }
     .resultBody{padding:12px}
-    .empty{
-      color:var(--muted);font-size:13px;line-height:1.5;
-      border:1px dashed rgba(255,255,255,.16);
-      border-radius:14px;padding:10px 12px;
-      background: rgba(11,16,32,.25);
+    .empty{color:var(--muted); font-weight:700}
+    .demoNote{
+      border:1px dashed rgba(255,255,255,.22);
+      padding:12px;
+      border-radius:14px;
+      color:var(--muted);
+      font-weight:700;
+      background:rgba(255,255,255,.03);
     }
     .outText{
       white-space:pre-wrap;
-      font-size:13px;line-height:1.55;color:var(--text);
-      background: rgba(11,16,32,.25);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;padding:10px 12px;
+      line-height:1.5;
+      font-weight:700;
+      color:var(--text);
     }
-    .imgBox{
-      margin-top:10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      overflow:hidden;
-      background: rgba(11,16,32,.25);
+    .imgWrap{
+      display:flex; align-items:center; justify-content:center;
+      padding:10px;
     }
-    .imgBox img{display:block;width:100%;height:auto}
-    .demoNote{
-      margin-top:10px;
-      font-size:12px;color:#ffd6d6;
-      background: rgba(239,68,68,.10);
-      border:1px solid rgba(239,68,68,.22);
-      padding:10px 12px;border-radius:14px;
-    }
-
+    img.demoImg{max-width:100%; border-radius:14px; border:1px solid rgba(255,255,255,.12)}
     .footerNote{
-      margin-top:10px;color:var(--muted);font-size:11px;line-height:1.5
+      margin-top:12px;
+      color:var(--muted);
+      font-weight:650;
+      font-size:12.5px;
+      line-height:1.45;
     }
   </style>
 </head>
@@ -239,100 +218,103 @@
         <span>AI Studio Pro</span>
       </div>
 
-      <div class="menu">
+      <div class="navLinks">
         <a href="#tools">Tools</a>
         <a href="#fitur">Fitur</a>
         <a href="#harga">Harga</a>
         <a href="#faq">FAQ</a>
       </div>
 
-      <button class="waTop" id="waTopBtn">Chat WhatsApp</button>
+      <div class="navRight">
+        <button class="btn btnGreen" id="waBtn">Chat WhatsApp</button>
+      </div>
     </div>
 
-    <div class="hero" id="tools">
-      <!-- LEFT -->
-      <div class="card left">
-        <div class="badge">⚡ Generate Foto & Video AI • Cepat • Profesional</div>
+    <div class="grid">
+      <div class="card hero">
+        <div class="pill">⚡ Generate Foto & Video AI • Cepat • Profesional</div>
         <h1>Buat Konten AI untuk Bisnis, Kuliah, dan Affiliate — dalam hitungan detik.</h1>
-        <div class="desc">
+        <div class="sub">
           AI Studio Pro adalah website “editor AI” sederhana untuk menghasilkan output dari prompt.
           Cocok untuk konten TikTok/IG, promosi produk, thumbnail, dan presentasi.
         </div>
 
-        <div class="ctaRow">
-          <button class="btn primary" id="demoBtn">Coba Demo Tools</button>
+        <div class="heroBtns">
+          <button class="btn btnPrimary" id="demoBtn">Coba Demo Tools</button>
           <button class="btn" id="paketBtn">Lihat Paket</button>
-          <button class="btn danger" id="resetBtn">Reset</button>
+          <button class="btn btnDanger" id="resetHeroBtn">Reset</button>
         </div>
 
-        <div class="pillGrid" id="fitur">
-          <div class="pill">
-            <div class="pillTitle">🎯 Untuk Affiliate</div>
-            <div class="pillText">Buat caption promosi produk lebih cepat: poster, thumbnail, short video script.</div>
+        <div class="miniCards" id="fitur">
+          <div class="mini">
+            🎯 <b>Untuk Affiliate</b><br>
+            Buat caption promosi produk lebih cepat: poster, thumbnail, short video script.
           </div>
-          <div class="pill">
-            <div class="pillTitle">🧠 Untuk Kreator</div>
-            <div class="pillText">Prompt → hasil. Copy output, simpan ide, dan pakai template gaya profesional.</div>
+          <div class="mini">
+            ✨ <b>Untuk Kreator</b><br>
+            Prompt → hasil. Copy output, simpan ide, dan pakai template gaya profesional.
           </div>
         </div>
 
         <div class="footerNote" id="harga">
-          *Demo ini menampilkan simulasi hasil. Untuk “AI asli” biasanya butuh API (nanti bisa kita upgrade).
+          *Ini versi demo UI. Untuk generate AI asli biasanya butuh API (nanti bisa kita upgrade).
         </div>
       </div>
 
-      <!-- RIGHT -->
-      <div class="card right">
+      <div class="card tool" id="tools">
         <div class="tabs">
-          <div class="tab active" id="tabImage">🖼️ Generate Gambar</div>
-          <div class="tab" id="tabVideo">🎬 Generate Video</div>
-          <div class="tab" id="tabCaption">🔗 Affiliate Caption</div>
+          <div class="tab active" data-mode="image">🖼️ Generate Gambar</div>
+          <div class="tab" data-mode="video">🎬 Generate Video</div>
+          <div class="tab" data-mode="caption">🧷 Affiliate Caption</div>
         </div>
 
-        <div class="formLabel">Prompt</div>
-        <textarea id="prompt" placeholder="Contoh: Poster promo kopi latte, gaya minimalis, lighting hangat, text “Diskon 30%”..."></textarea>
-        <div class="hint">Tips: tulis style + objek + warna + tujuan (poster/thumbnail/scene).</div>
+        <div class="field">
+          <label for="promptEl">Prompt</label>
+          <textarea id="promptEl" placeholder='Contoh: Poster promo kopi latte, gaya minimalis, lighting hangat, text "Diskon 30%"...'></textarea>
 
-        <div class="row2">
-          <div>
-            <div class="formLabel">Gaya</div>
-            <select id="styleSel">
-              <option>Minimalis</option>
-              <option>Modern</option>
-              <option>Clean</option>
-              <option>Cinematic</option>
-              <option>Vintage</option>
-              <option>Cartoon</option>
-            </select>
+          <div class="footerNote">
+            Tips: tulis style + objek + warna + tujuan (poster/thumbnail/scene).
           </div>
-          <div>
-            <div class="formLabel">Rasio</div>
-            <select id="ratioSel">
-              <option value="1:1">1:1 (Instagram)</option>
-              <option value="4:5">4:5 (IG Feed)</option>
-              <option value="9:16">9:16 (TikTok/Reels)</option>
-              <option value="16:9">16:9 (YouTube)</option>
-            </select>
-          </div>
-        </div>
 
-        <div class="actions">
-          <button class="btnBig primary" id="genBtn">Generate</button>
-          <button class="btnBig secondary" id="copyBtn">Copy Output</button>
-        </div>
-
-        <div class="result">
-          <div class="resultTop">
-            <span>Hasil</span>
-            <span class="modePill" id="modePill">Mode: Gambar</span>
+          <div class="row">
+            <div>
+              <label for="styleSel">Gaya</label>
+              <select id="styleSel">
+                <option value="Minimalis">Minimalis</option>
+                <option value="Cinematic">Cinematic</option>
+                <option value="Modern">Modern</option>
+                <option value="Vintage">Vintage</option>
+              </select>
+            </div>
+            <div>
+              <label for="ratioSel">Rasio</label>
+              <select id="ratioSel">
+                <option value="1:1">1:1 (Instagram)</option>
+                <option value="9:16">9:16 (TikTok/Reels)</option>
+                <option value="16:9">16:9 (YouTube)</option>
+                <option value="4:5">4:5 (Feed)</option>
+              </select>
+            </div>
           </div>
-          <div class="resultBody" id="resultBody">
-            <div class="empty">Demo mode aktif. Klik <b>Generate</b> untuk melihat contoh hasil.</div>
-          </div>
-        </div>
 
-        <div class="footerNote" id="faq">
-          Kalau kamu ingin hasil gambar/video AI beneran, nanti kita sambungkan ke API (OpenAI/Replicate, dll).
+          <div class="actions">
+            <button class="btn btnPrimary" id="genBtn">Generate</button>
+            <button class="btn" id="copyBtn">Copy Output</button>
+          </div>
+
+          <div class="result">
+            <div class="resultTop">
+              <span>Hasil</span>
+              <span class="badge" id="modePill">Mode: Gambar</span>
+            </div>
+            <div class="resultBody" id="resultBody">
+              <div class="empty">Demo mode aktif. Klik <b>Generate</b> untuk melihat contoh hasil.</div>
+            </div>
+          </div>
+
+          <div class="footerNote" id="faq">
+            Kalau kamu ingin hasil gambar/video AI beneran, nanti kita sambungkan ke API.
+          </div>
         </div>
       </div>
     </div>
@@ -340,41 +322,29 @@
 
   <script>
     (function(){
-      // === SETTINGS ===
-      const WA_NUMBER = "6285353511419"; // tanpa +
+      // ===== SETTINGS =====
+      // nomor tanpa "+" (sudah benar seperti ini)
+      const WA_NUMBER = "6285353511419";
+      const WA_DEFAULT_TEXT = "Halo admin, saya mau tanya AI Studio Pro.";
 
-      // === ELEM ===
-      const tabImage = document.getElementById("tabImage");
-      const tabVideo = document.getElementById("tabVideo");
-      const tabCaption = document.getElementById("tabCaption");
-
-      const promptEl = document.getElementById("prompt");
+      // ===== ELEMENTS =====
+      const tabs = Array.from(document.querySelectorAll(".tab"));
+      const promptEl = document.getElementById("promptEl");
       const styleSel = document.getElementById("styleSel");
       const ratioSel = document.getElementById("ratioSel");
-
-      const genBtn = document.getElementById("genBtn");
-      const copyBtn = document.getElementById("copyBtn");
       const resultBody = document.getElementById("resultBody");
       const modePill = document.getElementById("modePill");
 
-      const waTopBtn = document.getElementById("waTopBtn");
+      const genBtn = document.getElementById("genBtn");
+      const copyBtn = document.getElementById("copyBtn");
+      const waBtn = document.getElementById("waBtn");
+
       const demoBtn = document.getElementById("demoBtn");
       const paketBtn = document.getElementById("paketBtn");
-      const resetBtn = document.getElementById("resetBtn");
+      const resetHeroBtn = document.getElementById("resetHeroBtn");
 
-      let mode = "image"; // image | video | caption
+      let mode = "image";
       let lastOutputText = "";
-
-      function setActiveTab(){
-        tabImage.classList.toggle("active", mode==="image");
-        tabVideo.classList.toggle("active", mode==="video");
-        tabCaption.classList.toggle("active", mode==="caption");
-
-        modePill.textContent =
-          mode==="image" ? "Mode: Gambar" :
-          mode==="video" ? "Mode: Video" :
-          "Mode: Affiliate Caption";
-      }
 
       function escapeHtml(str){
         return String(str)
@@ -385,9 +355,22 @@
           .replaceAll("'","&#039;");
       }
 
-      function makePlaceholderImage(text, ratio){
-        // simple SVG placeholder (no external files)
-        const safe = escapeHtml(text).slice(0, 120);
+      function setActiveTab(){
+        tabs.forEach(t => t.classList.toggle("active", t.dataset.mode === mode));
+        if(mode === "image") modePill.textContent = "Mode: Gambar";
+        if(mode === "video") modePill.textContent = "Mode: Video";
+        if(mode === "caption") modePill.textContent = "Mode: Caption";
+      }
+
+      function openWhatsApp(customText){
+        const text = encodeURIComponent(customText || WA_DEFAULT_TEXT);
+        const url = https://wa.me/${WA_NUMBER}?text=${text};
+        window.open(url, "_blank");
+      }
+
+      function makeDemoImageDataUrl(prompt, style, ratio){
+        // SVG demo supaya tombol "Generate" benar-benar menghasilkan sesuatu tanpa API
+        const safe = escapeHtml(prompt).slice(0, 120);
         const svg =
 `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
   <defs>
@@ -397,12 +380,12 @@
     </linearGradient>
   </defs>
   <rect width="1200" height="700" fill="#0b1020"/>
-  <rect x="40" y="40" width="1120" height="620" rx="28" fill="url(#g)" stroke="rgba(255,255,255,0.12)" />
-  <text x="80" y="130" fill="#eaf0ff" font-size="42" font-family="Arial" font-weight="800">Preview (Demo)</text>
-  <text x="80" y="190" fill="#a9b4de" font-size="26" font-family="Arial" font-weight="700">Rasio: ${escapeHtml(ratio)}</text>
-  <text x="80" y="250" fill="#eaf0ff" font-size="22" font-family="Arial">Prompt:</text>
-  <text x="80" y="290" fill="#eaf0ff" font-size="20" font-family="Arial">${safe}</text>
-  <text x="80" y="610" fill="#a9b4de" font-size="18" font-family="Arial">Untuk gambar AI asli, sambungkan API.</text>
+  <rect x="40" y="40" width="1120" height="620" rx="28" fill="url(#g)" stroke="rgba(255,255,255,.12)"/>
+  <text x="80" y="140" fill="#eaf0ff" font-size="44" font-family="Arial" font-weight="800">Preview (Demo)</text>
+  <text x="80" y="200" fill="#a9b4de" font-size="24" font-family="Arial" font-weight="700">Rasio: ${escapeHtml(ratio)} • Gaya: ${escapeHtml(style)}</text>
+  <text x="80" y="270" fill="#eaf0ff" font-size="20" font-family="Arial" font-weight="700">Prompt:</text>
+  <text x="80" y="310" fill="#eaf0ff" font-size="18" font-family="Arial">${safe}</text>
+  <text x="80" y="600" fill="#a9b4de" font-size="16" font-family="Arial">Untuk gambar AI asli, sambungkan API.</text>
 </svg>`;
         return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
       }
@@ -413,24 +396,22 @@
         const ratio = ratioSel.value;
 
         if(!prompt){
-          resultBody.innerHTML = <div class="demoNote">Prompt masih kosong. Tulis prompt dulu ya 🙂</div>;
+          resultBody.innerHTML = '<div class="demoNote">Prompt masih kosong. Tulis prompt dulu ya 😊</div>';
           lastOutputText = "";
           return;
         }
 
-        if(mode === "caption"){
-          const caption =
-`📌 ${prompt}
-
-✅ Gaya: ${style}
-✅ Rasio: ${ratio}
-
-🔥 Mau hasil cepat & rapi? Chat admin via WhatsApp.
-#affiliate #promosi #kontenAI`;
-          lastOutputText = caption;
-          resultBody.innerHTML = `
-            <div class="outText">${escapeHtml(caption)}</div>
-          `;
+        if(mode === "image"){
+          const imgUrl = makeDemoImageDataUrl(prompt, style, ratio);
+          lastOutputText =
+`(DEMO) Gambar dibuat.
+Prompt: ${prompt}
+Gaya: ${style}
+Rasio: ${ratio}`;
+          resultBody.innerHTML =
+            '<div class="imgWrap">' +
+              '<img class="demoImg" alt="Demo Result" src="' + imgUrl + '"/>' +
+            '</div>';
           return;
         }
 
@@ -442,39 +423,45 @@ Prompt: ${prompt}
 Gaya: ${style}
 Rasio: ${ratio}
 
-Catatan: Untuk generate video AI asli, perlu API/engine video.`;
+Output (demo):
+- Scene 1: establishing shot (3s)
+- Scene 2: close-up produk (4s)
+- Scene 3: CTA + teks promo (3s)
+
+*Untuk video AI asli, perlu API.`;
           lastOutputText = videoText;
-          resultBody.innerHTML = `
-            <div class="outText">${escapeHtml(videoText)}</div>
-            <div class="demoNote">Demo mode: belum terhubung ke API video. Kalau mau, nanti saya sambungkan.</div>
-          `;
+          resultBody.innerHTML =
+            '<div class="outText">' + escapeHtml(videoText) + '</div>';
           return;
         }
 
-        // image
-        const out =
-`(DEMO) Hasil Gambar ✅
+        // caption
+        const caption =
+`📌 ${prompt}
 
-Prompt: ${prompt}
-Gaya: ${style}
-Rasio: ${ratio}
+✅ Gaya: ${style}
+✅ Rasio: ${ratio}
 
-Catatan: Ini contoh demo. Untuk gambar AI asli, perlu API.`;
-        lastOutputText = out;
-
-        const imgSrc = makePlaceholderImage(prompt, ratio);
-        resultBody.innerHTML = `
-          <div class="outText">${escapeHtml(out)}</div>
-          <div class="imgBox">
-            <img src="${imgSrc}" alt="Demo Preview" />
-          </div>
-          <div class="demoNote">Demo mode: ini preview contoh. Kalau mau AI asli, nanti saya buatkan versi API.</div>
-        `;
+🔥 Mau hasil cepat & rapi? Chat admin via WhatsApp.
+#affiliate #promosi #kontenAI`;
+        lastOutputText = caption;
+        resultBody.innerHTML =
+          '<div class="outText">' + escapeHtml(caption) + '</div>';
       }
 
-      async function copyOutput(){
+      // ===== EVENTS =====
+      tabs.forEach(t => {
+        t.addEventListener("click", () => {
+          mode = t.dataset.mode;
+          setActiveTab();
+        });
+      });
+
+      genBtn.addEventListener("click", generate);
+
+      copyBtn.addEventListener("click", async () => {
         if(!lastOutputText){
-          alert("Belum ada output untuk dicopy. Klik Generate dulu.");
+          alert("Belum ada output untuk dicopy. Klik Generate dulu ya.");
           return;
         }
         try{
@@ -487,53 +474,39 @@ Catatan: Ini contoh demo. Untuk gambar AI asli, perlu API.`;
           document.body.appendChild(ta);
           ta.select();
           document.execCommand("copy");
-          ta.remove();
+          document.body.removeChild(ta);
           alert("Output berhasil dicopy ✅");
         }
-      }
+      });
 
-      function openWhatsApp(){
-        const prompt = (promptEl.value || "").trim();
-        const style = styleSel.value;
-        const ratio = ratioSel.value;
+      waBtn.addEventListener("click", () => {
+        const p = (promptEl.value || "").trim();
+        const text = p ? ("Halo admin, saya mau tanya soal prompt ini:\n\n" + p) : WA_DEFAULT_TEXT;
+        openWhatsApp(text);
+      });
 
-        const msg = prompt
-          ? Halo admin, saya mau pakai AI Studio Pro.\n\nMode: ${mode}\nPrompt: ${prompt}\nGaya: ${style}\nRasio: ${ratio}
-          : Halo admin, saya mau tanya AI Studio Pro.;
-
-        const url = https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)};
-        window.open(url, "_blank");
-      }
-
-      // === EVENTS ===
-      tabImage.addEventListener("click", ()=>{ mode="image"; setActiveTab(); });
-      tabVideo.addEventListener("click", ()=>{ mode="video"; setActiveTab(); });
-      tabCaption.addEventListener("click", ()=>{ mode="caption"; setActiveTab(); });
-
-      genBtn.addEventListener("click", generate);
-      copyBtn.addEventListener("click", copyOutput);
-
-      waTopBtn.addEventListener("click", openWhatsApp);
-
-      demoBtn.addEventListener("click", ()=>{
-        promptEl.value = "Poster promo kopi latte, gaya minimalis, lighting hangat, text “Diskon 30%”, background gelap elegan";
+      demoBtn.addEventListener("click", () => {
+        promptEl.value = 'Poster promo kopi latte, gaya minimalis, lighting hangat, text "Diskon 30%"';
         styleSel.value = "Minimalis";
         ratioSel.value = "1:1";
         mode = "image";
         setActiveTab();
         generate();
+        // scroll ke tools
+        document.getElementById("tools").scrollIntoView({behavior:"smooth"});
       });
 
-      paketBtn.addEventListener("click", ()=>{
-        alert("Paket belum dibuat (demo). Kalau mau, sebutkan paket & harga, nanti saya buatkan section Harga.");
+      paketBtn.addEventListener("click", () => {
+        alert("Paket belum dibuat (demo). Kalau mau, sebutkan paket & harga, nanti saya bikin halamannya.");
       });
 
-      resetBtn.addEventListener("click", ()=>{
+      resetHeroBtn.addEventListener("click", () => {
         promptEl.value = "";
         lastOutputText = "";
-        resultBody.innerHTML = <div class="empty">Demo mode aktif. Klik <b>Generate</b> untuk melihat contoh hasil.</div>;
+        resultBody.innerHTML = '<div class="empty">Demo mode aktif. Klik <b>Generate</b> untuk melihat contoh hasil.</div>';
       });
 
+      // init
       setActiveTab();
     })();
   </script>
